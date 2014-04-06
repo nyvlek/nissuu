@@ -164,7 +164,6 @@ if (!class_exists('ap_nissuu')) {
                                     $doc_link = $issuu_link;
                                     $link_target = 'target="_blank"';
                                 }
-                                echo "==========================" . __LINE__;
                                 if ($img != 'false') {
                                     $output .= '<li ' . $selected . '><a class="issuu-view" href="' . $doc_link . '" ' . $link_target . '><img src="http://image.issuu.com/' . $dId . '/jpg/page_1_thumb_medium.jpg" width="' . $img . '">' . $d->document->title . '</a><small>' . $this->formatIssuuDate($d->document->publishDate) . '</small></li>';
                                 } else {
@@ -181,7 +180,7 @@ if (!class_exists('ap_nissuu')) {
                         echo $output;
                     } else {
                         // No Documents in the json file.
-                        echo '<div id="nissuu">' . _("No se han encontrado en su cuenta de Issuu documento") . '</div>';
+                        echo '<div id="nissuu">' . _("No se han encontrado documentos en su cuenta de Issuu") . '</div>';
                     }
                 }
             }
