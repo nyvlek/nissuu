@@ -53,10 +53,6 @@ if (!class_exists('issuuAPI')) {
                 $request_url = $this->requestUrl . '?signature=' . $signature . $argAsUrlParameters;
                 $response = wp_remote_get($request_url);
 
-                /*
-                  check if issuu returns an error.
-                 */
-
                 $json = json_decode($response['body'], true);
                 $error = (isset($json["rsp"]["_content"]["error"]));
 

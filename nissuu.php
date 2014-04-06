@@ -111,7 +111,7 @@ if (!class_exists('ap_nissuu')) {
                 $docs = $this->listDocs(false);
 
                 if (is_array($docs) && isset($docs['error'])) {
-                    echo '<div>' . _("Issuu could not be reached, sorry") . '</div>';
+                    echo '<div>' . _("No pudo conectar con Issuu") . '</div>';
                 } else {
                     if ($_GET['documentId'] != '') {
                         $docId = $_GET['documentId'];
@@ -121,7 +121,7 @@ if (!class_exists('ap_nissuu')) {
                         if (count($docs->_content) > 0) {
                             if ($this->filterByTag != '') {
                                 foreach ($docs->_content as $d) {
-                                    if (in_array($this->filterByTag, $d->document->tags)) {
+                                    if (stripos("**".$d->document->title . "-" . $d->document->title, $this->filterByTag)) {
                                         $docId = $d->document->documentId;
                                         $docTitle = $d->document->title;
                                         break;
@@ -140,7 +140,6 @@ if (!class_exists('ap_nissuu')) {
                         // display viewer, send it options in array
 
                         if ($viewer !== 'no') {
-
                             $output .= $this->issuuViewer(array('documentId' => $docId, 'viewer' => $viewer, 'title' => $docTitle, 'height' => $height, 'bgcolor' => $bgcolor, 'titlebar' => $titlebar, 'vmode' => $vmode));
                         }
 
@@ -150,15 +149,10 @@ if (!class_exists('ap_nissuu')) {
                         $output .='<ol class="issuu-list">';
                         $count = 0;
                         foreach ($docs->_content as $d) {
-
-
                             $isInTags = (is_array($d->document->tags) && in_array($this->filterByTag, $d->document->tags));
                             $wantItAll = (trim($this->filterByTag) === '');
 
-                            if ($isInTags || $wantItAll) {
-                                //$output.=  "want it all = $wantItAll & isInTags=$isInTags";
-                                //$output .= "tags =" .print_r($d->document->tags,true);
-
+                            if (stripos("**".$d->document->title . "-" . $d->document->title, $this->filterByTag)) {
                                 $count++;
                                 $issuu_link = 'http://issuu.com/' . $d->document->username . '/docs/' . $d->document->name . '#download';
                                 $dId = $d->document->documentId;
@@ -170,6 +164,7 @@ if (!class_exists('ap_nissuu')) {
                                     $doc_link = $issuu_link;
                                     $link_target = 'target="_blank"';
                                 }
+                                echo "==========================" . __LINE__;
                                 if ($img != 'false') {
                                     $output .= '<li ' . $selected . '><a class="issuu-view" href="' . $doc_link . '" ' . $link_target . '><img src="http://image.issuu.com/' . $dId . '/jpg/page_1_thumb_medium.jpg" width="' . $img . '">' . $d->document->title . '</a><small>' . $this->formatIssuuDate($d->document->publishDate) . '</small></li>';
                                 } else {
